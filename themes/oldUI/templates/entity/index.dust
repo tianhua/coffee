@@ -1,0 +1,270 @@
+{>"layouts/master" /}
+{<body}
+     <div class="products">
+            
+                <fieldset>
+                    <legend>{@pre type="content" key="entitylist"/}</legend>
+                        <!--Search Nav-->
+                        <nav class="navbar navbar-default hidden" role="navigation" style='padding:0px;line-height:0.9em !important;font-size:0.9em !important;'>
+												  <div class="container-fluid">
+												    <!-- Brand and toggle get grouped for better mobile display -->
+												    <div class="navbar-header">
+												      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#searchForm">
+												        <span class="sr-only">Toggle navigation</span>
+												        <i class='icon icon-search'></i>
+												      </button>
+												      <a class="navbar-brand" href="#">{@pre type="content" key="search"/}</a>
+												    </div>
+												
+												    <!-- Collect the nav links, forms, and other content for toggling -->
+												    <div class="collapse navbar-collapse" id="searchForm">
+												      <ul class="nav navbar-nav">
+												      <li>
+											             <a data-toggle="dropdown" class="dropdown-toggle" href="#">{@pre type="content" key="floor"/} </a>
+											              <ul class="dropdown-menu">
+											               	<li {@eq key=floor value=1.5} class='active'{/eq}><a href="?floor=1.5">{@pre type="content" key="floor1half"/}</a></li>
+															        <li {@eq key=floor value=2} class='active'{/eq}><a href="?floor=2">{@pre type="content" key="floor2"/}</a></li>  
+															        <li {@eq key=floor value=3} class='active'{/eq}><a href="?floor=3">{@pre type="content" key="floor3"/}</a></li>  
+															        <li {@eq key=floor value=4} class='active'{/eq}><a href="?floor=4">{@pre type="content" key="floor4"/}</a></li>  
+															        <li {@eq key=floor value=5} class='active'{/eq}><a href="?floor=5">{@pre type="content" key="floor5"/}</a></li>  
+											              </ul>
+											            </li>
+												     	 <li>
+											             <a data-toggle="dropdown" class="dropdown-toggle" href="#">{@pre type="content" key="category"/} </a>
+											              <ul class="dropdown-menu">
+											              	{#category}
+													        	<li><a href="?category={id}">{name}</a></li>
+													        {/category} 
+												     	   </ul>
+											             </li>
+	 
+												      </ul>
+												    </div><!-- /.navbar-collapse -->
+												  </div><!-- /.container-fluid -->
+												</nav>
+                        <!--Close Search Nav-->
+                          <!--Search bar-->
+                          <div style='margin-bottom:10px;'>
+                          <form id='searchBarForm' method='GET'>
+                          <div style='margin-top:20px;padding-top:20px;'>
+		                          <select  class="my-select" id='floor' name='floor'>
+		                          				<option value=''>{@pre type="content" key="floor"/}</option>
+		                          				<option value=1 >{@pre type="content" key="floor1"/}</option>
+											               	<option value=1.5 >{@pre type="content" key="floor1half"/}</option>
+															        <option value=2 >{@pre type="content" key="floor2"/}</option>  
+															        <option  value=3 >{@pre type="content" key="floor3"/}</option>  
+															        <option value=4  >{@pre type="content" key="floor4"/}</option>  
+															        <option  value=5 >{@pre type="content" key="floor5"/}</option>  
+											        </select> 
+											        
+											       
+							                          <select  class="my-select" id='category' name='category' >
+							                          		<option value=''>{@pre type="content" key="category"/}</option>
+									                          {#category}
+															        	<option value={id}>{name}</option>
+															        	{#sub}
+															        		<option value={id}>> {name}</option>
+															        	{/sub}
+													        {/category}
+											        </select> 
+								
+											        <button type='submit' class="btn btn-default btn-mini hidden" style='padding:5px;margin-top:-1px;'><i class='icon icon-search'></i> {@pre type="content" key="search"/}</button>
+						 		
+						 </div>
+                          </form>
+                          </div>
+                          <!--Close Search bar-->
+                        {?items}
+                        {#items}
+                                    <div class="panel panel-primary my-list-item" id="appointment{id}" onclick="javascript:return goToDetail({id});">
+																			  <div class="panel-heading"><h3 style='display:inline-block;margin:0px;'>{name}</h3> 
+																			  
+																			  </div>
+																			  <div class="panel-body">
+																			  <div class='alert alert-info' style='padding:5px;' onclick='javascript:showMap({floor},{number},event);'>{@pre type="content" key="entityaddress"/} {floor}-{number} <i class='icon-black icon-question-sign'></i></div>
+																			  <form method="POST">
+	  																				    <div style='margin-top:10px;padding-bottom:30px;position:relative'> 		
+																			    		<div class='col-xs-6 col-sm-6 col-md-6'>
+																				    		
+																			    		</div>
+																			    		<div class='col-xs-6 col-sm-6 col-md-6'>
+																			    			<div> <label class='label label-primary'> {category} </label></div>
+																			    			{?phone}
+
+																			    			<div style='margin-top:15px;'><div class='my-icon-phone'></div> <label class='label label-info'>  {phone}</label>  </div>
+																			    			{/phone}
+
+																			    			
+																					    </div>	
+																			    		</div>
+																			    		
+																				    	<div class='clear'> 
+																			    		
+																			    	</div>
+																			    	{?description}
+																			    	<div style='margin:10px 0px;' class="alert alert-warning" role="alert">
+																			    	<h4>{@pre type="content" key="entityDesc"/}</h4>
+																			    			{description}				    	
+																			    	</div>
+																			    	{/description}
+																			    	<div class='pull-right' style='margin-top:10px;'>
+																					    		{?userObj.username}
+															                                    <button type='button' onclick="javascript:return comment({id},event);" class="btn btn-success btn-mini"><i class="icon-white icon-heart"></i> {@pre type="content" key="comment"/}</button>
+															                                    {:else}
+															                                    <button type='button'  class="btn btn-default btn-mini link my-tool-tip" data-original-title="{@pre type="content" key="needRegister"/}"><i class="icon-black icon-heart"></i> {@pre type="content" key="comment"/}</button>
+														                                     {/userObj.username} 
+														                                    </div>	
+																			    	<button style='display:none' onclick="javascript:return addCart({id});" class="btn btn-success btn-mini"><i class="icon-white icon-heart"></i> remove</button>
+				                                    
+				                                    <!--If we don't at the Cross-Site Request Forgey token, this POST will be rejected-->
+				                                    <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+				                                    <input type="hidden" name="_method" value="POST">
+				                                     </form>
+																			  </div>
+																			</div>
+                        {/items}
+                        {:else}
+               
+            						{/items}
+                </fieldset>
+            
+        </div>
+        
+        <div id='commentDialog'  class="modal fade" tabindex="-1" role="dialog" >
+
+       			  <div class="modal-header">
+          			 <button type="button" class="close" data-dismiss="modal" style='padding:3px;'>×</button>
+           		 </div>
+           		 <div class="modal-body">  
+       			 <fieldset>
+				        <legend class="">{@pre type="content" key="comment"/}</legend>
+				    <div class="control-group">
+				        <!-- title
+						<label class="control-label pull-left" for="title">{@pre type="content" key="title"/}</label>
+				          <div class="controls pull-right">
+				            <input type="text"  class="input-xlarge" name='title' id='title'>
+				          </div>
+							<div class='clear'></div>-->		
+				           <!-- content-->
+						<label class="control-label  pull-left" for="content">{@pre type="content" key="content"/}</label>
+				          <div class="controls pull-right">
+				            <textarea  class="input-xlarge" name='content' id='content'></textarea>
+				          </div>
+				          
+				    </div>
+					<div id='commentMsg' style='display:none'></div>
+					
+    			</fieldset>
+    			</div>
+    			 <div class="modal-footer">  
+				          <!-- Button -->
+				          <div class="controls">
+				            <button type='button' id='submitComment' onclick="javascript: addComment();" class="btn btn-success"><i class="icon-white icon-hand-right"></i> {@pre type="content" key="submit"/}</button>
+				          </div>
+
+				</div>
+   
+        </div>
+        <div id='floorMapDialog'  class="modal fade" tabindex="-1" role="dialog">
+
+       			  <div class="modal-header">
+          			 <button type="button" class="close" data-dismiss="modal" style='padding:3px;'>×</button>
+           		 </div>
+           		 <div class="modal-body">  
+       			 <img class='img img-responsive' src=''/>
+    			</div>
+    			 <div class="modal-footer">  	 
+    			 </div>
+   
+        </div>
+        <script>  
+$.ajaxSetup({
+    crossDomain: false, 
+    beforeSend: function(xhr, settings) {
+           
+    }
+});
+
+var csrftoken = $('#csrf').val();
+$(document).ready(function(){
+$('.my-tool-tip').tooltip({trigger:'click'});
+$('.my-tool-tip').click(function(e){
+stopEvent(e);
+return false;
+});
+$('#floor').val({query.floor});
+$('#category').val({query.category});
+$('#floor').change(function(){
+$('#searchBarForm').submit();
+});
+$('#category').change(function(){
+$('#searchBarForm').submit();
+});
+});
+function showMap(id,number,event){
+stopEvent(event);
+location.href = '/image/jpg/floor_' + id + '_' + number;
+return false;
+}
+function comment(id,event)
+{
+stopEvent(event);
+$('#commentDialog').modal();
+$('#commentDialog').data('entityid',id);
+return false;
+}
+ function addComment()
+        {
+         var id = $('#commentDialog').data('entityid');
+         var content = $('#content').val();
+         var title = '';
+         $.post( "/comment/add", 
+         {	_csrf:csrftoken, 
+         	content:content, 
+         	title:title,
+         	target_type:'entity',
+         	target_id:id
+          },
+         	 function( data ) {
+         	 if(data['insertId'] >= 0)
+         	 {
+         	 $('#content').val('');
+         	 
+         	 $('#commentDialog .control-group').hide();
+         	  $('#commentMsg').html('<div class="alert alert-success" role="alert">{@pre type="content" key="commentSucess"/}</div>').show();
+         	  
+         	  window.setTimeout(
+         	  function(){
+         	  	$('#commentDialog').modal('hide');
+         	  	$('#commentMsg').hide();
+         	  	$('#commentDialog .control-group').show();
+         	  	},3000);
+         	 }
+         	 else
+         	 {
+         	 $('#commentMsg').html('<div class="alert alert-danger" role="alert">{@pre type="content" key="commentError"/}</div>').show();
+         	 window.setTimeout(function(){$('#commentDialog').modal('hide');$('#commentMsg').hide();},3000);
+         	 }
+					  return false ;
+					},"json");
+          return false;
+        }
+        function goToDetail(id)
+        {
+         window.location = "/entity/id/" + id;
+         return false;
+        }
+        function addCart(id)
+        {
+         $.post( "/cart", {_csrf:csrftoken}, function( data ) {
+					  return false;
+					},"json");
+          return false;
+        }
+        function goToDetail(id)
+        {
+         window.location = "/entity/id/" + id;
+         return false;
+        }
+        </script>
+{/body}

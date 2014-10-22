@@ -1,0 +1,107 @@
+{>"layouts/master" /}
+{<body}
+<div id='info'><div class='sucess'></div><div class='error'></div></div>
+     <form class="form-horizontal" id='register' method='POST'>
+     <input type="hidden" id='csrf' name="_csrf" value="{_csrf}">
+     <input type="hidden" id='_method' name="_method" value="CREATE">
+	<input type='hidden' name='postback' value='1' />
+    <fieldset>
+      <div id="legend" class="">
+        <legend class="">{@pre type="content" key="accountRegister"/}</legend>
+    <div class="control-group">
+          <!-- Text input-->
+          <label class="control-label" for="username">{@pre type="content" key="username"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge" name='username' id='username'>
+          </div>
+          <!-- phone-->
+					<label class="control-label" for="phone">{@pre type="content" key="phone"/}</label>
+          <div class="controls">
+            <input type="text"  class="input-xlarge" name='phone' id='phone'>
+          </div>
+          
+          <!-- Select Basic -->
+          <label class="control-label">{@pre type="content" key="gender"/}</label>
+          <div class="controls">
+            <select class="input-xlarge" name='gender' id='gender'>
+              <option value=''></option>
+              <option value='male'>{@pre type="content" key="male"/}</option>
+              <option value='female'>{@pre type="content" key="female"/}</option>
+            </select>
+          </div>
+
+					<label class="control-label">{@pre type="content" key="DOB"/}</label>
+          <div class="controls">
+            <select class="input-xlarge" name='year' id='year'>
+            <option value=''></option>
+              {#data.years}
+              <option value='{key}'>{value}</option>";
+              {/data.years}
+            </select>
+            <select class="input-xlarge" name='month' id='month'>
+            <option value=''></option>
+              {#data.months}
+              <option value='{key}'>{value}</option>";
+              {/data.months}
+            </select>
+            <select class="input-xlarge" name='day' id='day'>
+            <option value=''></option>
+              {#data.days}
+              <option value='{key}'>{value}</option>";
+              {/data.days}
+            </select>
+          </div>
+           <!-- password-->
+					<label class="control-label" for="phone">{@pre type="content" key="password"/}</label>
+          <div class="controls">
+            <input type="password"  class="input-xlarge" name='password' id='password'>
+          </div>
+           <!--confirm password-->
+					<label class="control-label" for="phone">{@pre type="content" key="confirmpassword"/}</label>
+          <div class="controls">
+            <input type="password"  class="input-xlarge" name='confirmpassword' id='confirmpassword'>
+          </div>
+    </div>
+        
+    <div class="control-group">
+          <!-- Button -->
+          <div class="controls">
+            <button id='submit' onclick="javascript:return addCart(1);"  class="btn btn-success">{@pre type="content" key="submit"/}</button>
+          </div>
+        </div>
+	</div>
+    </fieldset>
+  </form>
+        <script>  
+        function addCart(id)
+        {
+        var csrftoken = $('#csrf').val();
+         var method = $('#_method').val();
+        var username = $('#username').val();
+        var phone = $('#phone').val();
+        var gender = $('#gender').val();
+        var password =  $('#password').val();
+        var birthday = $('#year').val() + '-' + $('#month').val() + '-' + $('#day').val();       
+         $.post( "/user/register", {
+         _csrf:csrftoken,
+         username:username,
+         phone:phone,
+         gender:gender,
+         birthday:birthday,
+         password：password，
+         method:method
+         },
+          function( data ) {
+          if(data['insertId'])
+          {
+           $('#info .sucess').html("{data.sucess}").show;
+           setInterval(function(){
+           window.location = "/";
+           }, 3000);
+          }
+					  return false;
+					},"json");
+          return false;
+        }
+        </script>
+{/body}
